@@ -9,7 +9,7 @@ lazy val sslConfigCore = project.in(file("ssl-config-core"))
   .settings(commonSettings: _*)
   .settings(
     name := "ssl-config-core",
-    libraryDependencies ++= Dependencies.sslConfigCore
+    libraryDependencies ++= Dependencies.sslConfigCore ++ Library.parserCombinators(scalaVersion.value)
   ).enablePlugins(ReleasePlugin)
 
 lazy val sslConfigAkka = project.in(file("ssl-config-akka"))

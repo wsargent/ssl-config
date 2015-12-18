@@ -24,6 +24,10 @@ object Library {
   val specsMatcherExtra = "org.specs2"            %% "specs2-matcher-extra"           % Version.specs
 
   val scalaTest       = "org.scalatest"         %% "scalatest"                      % Version.scalaTest // not used at this moment
+
+  def parserCombinators(scalaVersion: String): Seq[ModuleID] =
+    if (scalaVersion.startsWith("2.10")) Seq.empty
+    else Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4")
 }
 
 object Dependencies {
