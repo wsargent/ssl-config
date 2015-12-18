@@ -113,9 +113,8 @@ final class AkkaSSLConfigExt(_config: Config)(implicit system: ExtendedActorSyst
     tmf.init(null.asInstanceOf[KeyStore])
     val trustManager: X509TrustManager = tmf.getTrustManagers()(0).asInstanceOf[X509TrustManager]
 
-    //    val disabledKeyAlgorithms = sslConfig.disabledKeyAlgorithms.getOrElse(Algorithms.disabledKeyAlgorithms) // was Option
-    val disabledKeyAlgorithms = sslConfig.disabledKeyAlgorithms.mkString(",") // TODO Sub optimal, we got a Seq...
-    val constraints = AlgorithmConstraintsParser.parseAll(AlgorithmConstraintsParser.line, disabledKeyAlgorithms).get.toSet
+    val disabledAlgorithms = sslConfig.disabledKeyAlgorithms.map(constraint => AlgorithmConstraintsParser.parseAll(AlgorithmConstraintsParser.expression, constraint))
+    val constraints = disabledAlgorithms.map(_.get).toSet
     val algorithmChecker = new AlgorithmChecker(keyConstraints = constraints, signatureConstraints = Set())
     for (cert ← trustManager.getAcceptedIssuers) {
       try {
